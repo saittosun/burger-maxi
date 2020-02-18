@@ -12,7 +12,7 @@ const burger = (props) => {
           return <BurgerIngredient key={igKey + i} type={igKey} />;
         });
       })
-      .reduce((arr, el) => {//this function receives two arguments passed in automatically by javascript, the previous value and the current value. The reduce method does not only accept these callback here which is executed on every element in this array we return here, it also accepts an initial value, let's say an empty array. So the initial value of the reduced value now of course you want to adjust this reduced value by returning something and it will then loop through all the elements and simply add them to the initial values step by step.
+      .reduce((arr, el) => {//to flatten the array//this function receives two arguments passed in automatically by javascript, the previous value and the current value. The reduce method does not only accept these callback here which is executed on every element in this array we return here, it also accepts an initial value, let's say an empty array. So the initial value of the reduced value now of course you want to adjust this reduced value by returning something and it will then loop through all the elements and simply add them to the initial values step by step.
         return arr.concat(el);//here I want to return the updated values starting with the initial one is then stored in the first argument which we receive in each loop here. So array this argument is the always updated root array which I want to return in the end.
       }, []);
       if (transfromIngredients.length === 0) {

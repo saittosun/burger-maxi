@@ -1,4 +1,4 @@
-// jshint esversion: 6
+// jshint esversion: 9
 import React, { Component } from "react";
 
 import Burger from '../../components/Burger/Burger';
@@ -20,7 +20,18 @@ class BurgerBuilder extends Component {
       cheese: 0,
       meat: 0
     },
-    totalPrice: 4
+    totalPrice: 4,
+    purchaseable: false
+  }
+
+  updatePurchaseState(ingredients) {
+    const sum = Object.keys(ingredients).map(igKey => {
+      //we can use this to return new value and replace the old value which was the property name, salad and so on with that new value.
+      return ingredients[igKey];//here I simply wanted to return ingredients and there the value for a given key and this will be the amount because with ingredients and this notation, I'm accessing a certain property in the ingredients object, igKey is salad, bacon and so on so I'm basically getting these values, the numbers and that is what I return for each key.
+    }).reduce((sum, el) => {
+      return sum + el;
+    }, 0);
+    this.setState({purchaseable: sum > 0});
   }
 
   addIngredientHandler = (type) => {
@@ -33,7 +44,8 @@ class BurgerBuilder extends Component {
     const priceAddition = INGREDIENT_PRICES[type];
     const oldPrice = this.state.totalPrice;
     const newPrice = oldPrice + priceAddition;
-    this.setState({totalPrice: newPrice, ingredients: updatedIngredients})
+    this.setState({totalPrice: newPrice, ingredients: updatedIngredients});
+    this.updatePurchaseState(updatedIngredients);
   }
 
   removeIngredientHandler = (type) => {
@@ -47,8 +59,9 @@ class BurgerBuilder extends Component {
     const priceDeduction = INGREDIENT_PRICES[type];
     const oldPrice = this.state.totalPrice;
     const newPrice = oldPrice - priceDeduction;
-    this.setState({totalPrice: newPrice, ingredients: updatedIngredients})
-  }
+    this.setState({totalPrice: newPrice, ingredients: updatedIngredients});
+    this.updatePurchaseState(updatedIngredients);
+  };
 
   render() {
     const disabledInfo = {
@@ -65,7 +78,8 @@ class BurgerBuilder extends Component {
           ingredientAdded={this.addIngredientHandler}
           ingredientRemoved={this.removeIngredientHandler}
           disabled={disabledInfo}
-          price={this.state.totalPrice}/>
+          price={this.state.totalPrice}
+          purchaseable={this.state.purchaseable}/>
       </Aux>
     )
   }
