@@ -1,6 +1,7 @@
 // jshint esversion: 6
 import React from 'react';
 
+import Button from '../../UI/Button/Button';
 import Aux from '../../../hoc/_Aux';// I don't really need a wrapping element here therefore I will import my auxiliary element from aux
 
 const orderSummary = (props) => {
@@ -21,6 +22,10 @@ const orderSummary = (props) => {
         {ingredientSummary}
       </ul>
       <p>Continue to Checkout?</p>
+      <Button
+        btnType="Danger" clicked={props.purchaseCancelled}>CANCEL</Button>
+      <Button
+        btnType="Success" clicked={props.purchaseContinued}>CONTINUE</Button>
     </Aux>
   )
 }
