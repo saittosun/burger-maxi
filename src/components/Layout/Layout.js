@@ -3,7 +3,7 @@
 //Now this allows us to simply use this layout component as a wrapper around the core content component we want to render to the screen.
 import React from 'react';
 
-import Toolbar from '../../navigation/Toolbar/Toolbar';
+import Toolbar from '../Navigation/Toolbar/Toolbar';
 import Aux from '../../hoc/_Aux';
 import classes from './Layout.css';
 
