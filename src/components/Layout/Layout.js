@@ -1,20 +1,34 @@
 //jshint esversion: 6
 //this should actually be a container because there we plan on managing the state for the burger we're about to build.
 //Now this allows us to simply use this layout component as a wrapper around the core content component we want to render to the screen.
-import React from 'react';
+import React, { Component } from 'react';
 
 import Toolbar from '../Navigation/Toolbar/Toolbar';
 import Aux from '../../hoc/_Aux';
 import classes from './Layout.css';
+import SideDrawer from '../Navigation/SideDrawer/SideDrawer';
 
 //two solutions to that, do you remember them? Well for one, we could return an array here instead of JSX which is sitting next to each other, if we return an array and give each item a key, we are allowed to kind of return adjacent elements. The alternative is to create such an auxiliary higher order component. It serves only one purpose, wrapping something and immediately outputting it but hence fulfilling the requirement of having a wrapping component. we also have of course the third option of wrapping everything in a div here or another element but I don't need that div or any other element, actually I want to have adjacent elements, that is why I will go with the higher order component approach and create such a utility auxiliary component.
-const layout = (props) => (
-  <Aux>
-    <Toolbar />
-    <main className={classes.Content}>
-      {props.children}
-    </main>
-  </Aux>
-);
+class Layout extends Component {//in my opinion, it makes more sense to turn the layout component into a class component where we can implement the method so that we can listen to both the sideDrawer closing itself by clicking on the backdrop as well as toolbar opening the sideDrawer by clicking on that toggle button.
+  state = {
+    showSideDrawer: true
+  }
+  sideDrawerClosedHandler = () => {
+    this.setState({showSideDrawer: false})
+  }
+  render() {
+    return (
+      <Aux>
+        <Toolbar />
+        <SideDrawer 
+          open={this.state.showSideDrawer} 
+          closed={this.sideDrawerClosedHandler}/>
+        <main className={classes.Content}>
+          {this.props.children}
+        </main>
+      </Aux>
+    )
+  }
+}
 
-export default layout;
+export default Layout;
