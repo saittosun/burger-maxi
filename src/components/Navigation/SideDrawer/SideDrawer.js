@@ -4,7 +4,7 @@ import React from 'react';
 import Logo from '../../Logo/Logo';
 import NavigationItems from '../NavigationItems/NavigationItems';
 import classes from './SideDrawer.css';
-import Aux from '../../../hoc/_Aux';
+import Aux from '../../../hoc/_Aux/_Aux';
 import Backdrop from '../../UI/Backdrop/Backdrop';
 
 const sideDrawer = (props) => {//return something will not be the jsx code immediately but a real function body we'll use here because before I return jsx in there, I basically want to conditionally attach different css classes to make sure we play some animation when the drawer is shown. So we'll add an open class which kind of slides it in and a close class which kind of slides it out
