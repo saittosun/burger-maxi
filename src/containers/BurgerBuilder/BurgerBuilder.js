@@ -29,6 +29,7 @@ class BurgerBuilder extends Component {
 
   //  I want to set up the state dynamically and you learned that a good place for fetching data is componentDidMount
   componentDidMount() {
+    console.log(this.props);
     // this will now send a request to get our ingredients, I'll then add a then block here to handle the response we get back and that response should of course contain our ingredients object.
     axios
       .get('https://hamburger-react-maxi.firebaseio.com/ingredients.json')
@@ -50,28 +51,43 @@ class BurgerBuilder extends Component {
     this.setState({purchasing: false});
   }
 
+  // I will command all this code out because I no longer want to store it on firebase immediately here I want to go to the checkout component instead Now as you learned since burger builder is part of the routable area of our project, we have access to the match location and history props. Bunu yukarida console.log(this.props); satirinda ispatliyor.
   purchaseContinueHandler = () => {
     // alert('you continue');
-    this.setState({loading: true})
-    const order = {
-      ingredients: this.state.ingredients,
-      price: this.state.totalPrice,
-      customer: {
-        name: 'maxi',
-        adress: {
-          street: 'teststreet',
-          zipcode: '1111',
-          country: 'Belgium'
-        },
-        email: 'test@test.com',
-      },
-      deliveryMethod: 'fastest'
+    // this.setState({loading: true})
+    // const order = {
+    //   ingredients: this.state.ingredients,
+    //   price: this.state.totalPrice,
+    //   customer: {
+    //     name: 'maxi',
+    //     adress: {
+    //       street: 'teststreet',
+    //       zipcode: '1111',
+    //       country: 'Belgium'
+    //     },
+    //     email: 'test@test.com',
+    //   },
+    //   deliveryMethod: 'fastest'
+    // }
+    // axios
+    //   .post('/orders.json', order)
+    //   .then(response => this.setState({loading: false, purchasing: false}))
+    //   .catch(error => this.setState({loading: false, purchasing: false}));
+    const queryParams = [];
+    for (let i in this.state.ingredients) {
+      // helper method which is provided by javascript, encodeURIComponent, which simply encodes my elements such that they can be used in the URL
+      queryParams.push(
+        // i is the key, these are the property names in my ingredients in the end just and here I'm setting property name equal to well the value for that property name.
+        encodeURIComponent(i) + '=' + 
+        encodeURIComponent(this.state.ingredients[i])
+      );
     }
-    axios
-      .post('/orders.json', order)
-      .then(response => this.setState({loading: false, purchasing: false}))
-      .catch(error => this.setState({loading: false, purchasing: false}));
-  }
+    const queryString = queryParams.join('&');
+    this.props.history.push({
+      pathname: '/checkout',
+      search: '?' + queryString
+    });
+  };
 
   updatePurchaseState(ingredients) {
     const sum = Object.keys(ingredients).map(igKey => {
