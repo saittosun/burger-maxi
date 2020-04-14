@@ -5,6 +5,7 @@ import classes from './Burger.css';
 import BurgerIngredient from './BurgerIngredient/BurgerIngredient';
 
 const burger = (props) => {
+  // the transformed ingredients, this actually is the logic we can use to turn our ingredients into an array of ingredients.
   let transfromIngredients = Object.keys(props.ingredients)
     .map(igKey => {
       return [...Array(props.ingredients[igKey])]//you can create an array with it, for example array three will give you an array with three empty spaces basically, with three undefined spaces.I don't care about the element itself so that is why I will use the underscore as an argument name to indicate that it's a blank but the index of that element is important
