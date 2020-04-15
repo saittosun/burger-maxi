@@ -91,9 +91,13 @@ class ContactData extends Component {
             {value: 'cheapest', displayValue: 'Cheapest'}
           ]
         },
-        value: ''
+        value: '',
+        validation: {},
+        // undefined is always treated as false but it also never changes to true. bu nedenle asagidaki kodu ekledik
+        valid: true
       }
     },
+    formIsValid: false,
     loading: false
   }
 
@@ -151,11 +155,25 @@ class ContactData extends Component {
     updatedFormElement.touched = true;
     updatedOrderForm[inputIdentifer] = updatedFormElement;
     console.log(updatedFormElement)
-    this.setState({orderForm: updatedOrderForm})
+
+    let formIsValid = true;
+    // updatedOrderForm is the state object which contains all my elements
+    for (let inputIdentifier in updatedOrderForm) {
+      formIsValid = updatedOrderForm[inputIdentifier].valid && formIsValid
+    }
+    console.log(formIsValid)
+
+    //  the right side here, FormIsValid is referring to my variable, FormIsValid, the left side is referring to the property in the state I want to update which of course is this FormIsValid property here.
+    this.setState({orderForm: updatedOrderForm, formIsValid: formIsValid})
   }
 
   checkValidity(value, rules) {
-    let isValid = true;
+    let isValid = true; 
+
+    // We can of course also implement both for double security but again, I like the approach up here by adding this empty validation object the most because it makes all the controls configured equally.
+    if (!rules) {
+      return true;
+    }
     if (rules.required) {
       isValid = value.trim() !== '' && isValid
     }
@@ -198,7 +216,9 @@ class ContactData extends Component {
                 changed={(e) => this.inputChangedHandler(e, formElement.id)}/>
             )
           })}
-          <Button btnType="Success">ORDER</Button>
+          <Button 
+            btnType="Success"
+            disabled={!this.state.formIsValid}>ORDER</Button>
       </form>
     );
     if (this.state.loading) {
