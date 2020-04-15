@@ -71,13 +71,19 @@ class ContactData extends Component {
   }
 
   orderHandler = (e) => {
+    // I want to prevent the default because I don't want to send the request automatically that would reload my page, instead I now need to extract the data I want to submit and the cool thing is all the data is already managed in this state, in our form object here, which is updated all the time with two way binding, the value is updated at least and the value is certainly what I'm interested in.
     e.preventDefault();
     // we get the ingredients in there with the ingredients being passed, now submitting the request is easy of course. In the burger builder where I have commented out this code for sending a request
     console.log(this.props.ingredients);
     this.setState({loading: true})
+    const formData = {}
+    for (let formElementIdentifier in this.state.orderForm) {
+      formData[formElementIdentifier] = this.state.orderForm[formElementIdentifier].value
+    }
     const order = {
       ingredients: this.props.ingredients,
       price: this.props.price,
+      orderData: formData
       // customer: {
       //   name: 'maxi',
       //   adress: {
@@ -126,7 +132,7 @@ class ContactData extends Component {
       })
     }
     let form = (
-      <form>
+      <form onSubmit={this.orderHandler}>
           {/* <Input inputtype="input" type="text" name="name" placeholder="Your name"/>
           <Input inputtype="input" type="email" name="email" placeholder="Your email"/>
           <Input inputtype="input" type="text" name="street" placeholder="Your street"/>
@@ -141,9 +147,7 @@ class ContactData extends Component {
                 changed={(e) => this.inputChangedHandler(e, formElement.id)}/>
             )
           })}
-          <Button 
-            btnType="Success"
-            clicked={this.orderHandler}>ORDER</Button>
+          <Button btnType="Success">ORDER</Button>
       </form>
     );
     if (this.state.loading) {
