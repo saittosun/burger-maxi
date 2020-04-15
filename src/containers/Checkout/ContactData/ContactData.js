@@ -22,7 +22,11 @@ class ContactData extends Component {
           type: 'text',
           placeholder: 'your name'
         },
-        value: ''
+        value: '',
+        validation: {
+          required: true
+        },
+        valid: false
       },
       street: {
         elementType: 'input',
@@ -30,7 +34,11 @@ class ContactData extends Component {
           type: 'text',
           placeholder: 'street'
         },
-        value: ''
+        value: '',
+        validation: {
+          required: true
+        },
+        valid: false
       },
       zipcode: {
         elementType: 'input',
@@ -38,7 +46,13 @@ class ContactData extends Component {
           type: 'text',
           placeholder: 'ZIP code'
         },
-        value: ''
+        value: '',
+        validation: {
+          required: true,
+          minLength: 5,
+          maxLength: 5
+        },
+        valid: false
       },
       country: {
         elementType: 'input',
@@ -46,7 +60,11 @@ class ContactData extends Component {
           type: 'text',
           placeholder: 'Country'
         },
-        value: ''
+        value: '',
+        validation: {
+          required: true
+        },
+        valid: false
       },
       email: {
         elementType: 'input',
@@ -54,7 +72,11 @@ class ContactData extends Component {
           type: 'email',
           placeholder: 'your E-mail'
         },
-        value: ''
+        value: '',
+        validation: {
+          required: true
+        },
+        valid: false
       },
       deliveryMethod: {
         elementType: 'select',
@@ -118,9 +140,28 @@ class ContactData extends Component {
       ...updatedOrderForm[inputIdentifer]
     }
     updatedFormElement.value = e.target.value;
+    updatedFormElement.valid = (
+      this.checkValidity(updatedFormElement.value, updatedFormElement.validation)
+    )
     updatedOrderForm[inputIdentifer] = updatedFormElement;
+    console.log(updatedFormElement)
     this.setState({orderForm: updatedOrderForm})
   }
+
+  checkValidity(value, rules) {
+    let isValid = true;
+    if (rules.required) {
+      isValid = value.trim() !== '' && isValid
+    }
+    if (rules.minLength) {
+      isValid = value.length >= rules.minLength && isValid;
+    }
+    if (rules.maxLength) {
+      isValid = value.length <= rules.maxLength && isValid;
+    }
+    return isValid
+  }
+
   render() {
     const formElementsArray = [];
     // the keys are going to be name, street, zipcode and so on and if we access order form for a given key, we get these values here on the right side of course.
