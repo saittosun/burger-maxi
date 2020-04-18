@@ -58,41 +58,21 @@ class BurgerBuilder extends Component {
 
   // I will command all this code out because I no longer want to store it on firebase immediately here I want to go to the checkout component instead Now as you learned since burger builder is part of the routable area of our project, we have access to the match location and history props. Bunu yukarida console.log(this.props); satirinda ispatliyor.
   purchaseContinueHandler = () => {
-    // alert('you continue');
-    // this.setState({loading: true})
-    // const order = {
-    //   ingredients: this.state.ingredients,
-    //   price: this.state.totalPrice,
-    //   customer: {
-    //     name: 'maxi',
-    //     adress: {
-    //       street: 'teststreet',
-    //       zipcode: '1111',
-    //       country: 'Belgium'
-    //     },
-    //     email: 'test@test.com',
-    //   },
-    //   deliveryMethod: 'fastest'
+    // redux-1 safhasinda asagiyi command yaptik bir yeri degistirerek yazdik
+    // const queryParams = [];
+    // for (let i in this.state.ingredients) {
+    //   queryParams.push(
+    //     encodeURIComponent(i) + '=' + 
+    //     encodeURIComponent(this.state.ingredients[i])
+    //   );
     // }
-    // axios
-    //   .post('/orders.json', order)
-    //   .then(response => this.setState({loading: false, purchasing: false}))
-    //   .catch(error => this.setState({loading: false, purchasing: false}));
-    const queryParams = [];
-    for (let i in this.state.ingredients) {
-      // helper method which is provided by javascript, encodeURIComponent, which simply encodes my elements such that they can be used in the URL
-      queryParams.push(
-        // i is the key, these are the property names in my ingredients in the end just and here I'm setting property name equal to well the value for that property name.
-        encodeURIComponent(i) + '=' + 
-        encodeURIComponent(this.state.ingredients[i])
-      );
-    }
-    queryParams.push('price=' + this.state.totalPrice)
-    const queryString = queryParams.join('&');
-    this.props.history.push({
-      pathname: '/checkout',
-      search: '?' + queryString
-    });
+    // queryParams.push('price=' + this.state.totalPrice)
+    // const queryString = queryParams.join('&');
+    // this.props.history.push({
+    //   pathname: '/checkout',
+    //   search: '?' + queryString
+    // });
+    this.props.history.push('/checkout');
   };
 
   updatePurchaseState(ingredients) {

@@ -6,6 +6,7 @@ import classes from './ContactData.css';
 import axios from "../../../../src/axios-orders";
 import Spinner from '../../../components/UI/Spinner/Spinner';
 import Input from '../../../components/UI/Input/Input';
+import { connect } from 'react-redux';
 
 class ContactData extends Component {
   state = {
@@ -105,14 +106,14 @@ class ContactData extends Component {
     // I want to prevent the default because I don't want to send the request automatically that would reload my page, instead I now need to extract the data I want to submit and the cool thing is all the data is already managed in this state, in our form object here, which is updated all the time with two way binding, the value is updated at least and the value is certainly what I'm interested in.
     e.preventDefault();
     // we get the ingredients in there with the ingredients being passed, now submitting the request is easy of course. In the burger builder where I have commented out this code for sending a request
-    console.log(this.props.ingredients);
+    // console.log(this.props.ingredients);
     this.setState({loading: true})
     const formData = {}
     for (let formElementIdentifier in this.state.orderForm) {
       formData[formElementIdentifier] = this.state.orderForm[formElementIdentifier].value
     }
     const order = {
-      ingredients: this.props.ingredients,
+      ingredients: this.props.ings,
       price: this.props.price,
       orderData: formData
       // customer: {
@@ -235,4 +236,11 @@ class ContactData extends Component {
   }
 }
 
-export default ContactData;
+const mapStateToProps = state => {
+  return {
+    ings: state.ingredients,
+    price: state.totalPrice
+  }
+}
+
+export default connect(mapStateToProps) (ContactData);
