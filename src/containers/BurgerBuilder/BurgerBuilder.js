@@ -24,9 +24,8 @@ class BurgerBuilder extends Component {
   // redux-1 asamasinda state icindeki bu kodu kaldirdik
   // ingredients: null, 
   // totalPrice: 4,
+  // purchaseable: false,
   state = {
-
-    purchaseable: false,
     purchasing: false,
     loading: false,
     error: false
@@ -103,7 +102,9 @@ class BurgerBuilder extends Component {
     }).reduce((sum, el) => {
       return sum + el;
     }, 0);
-    this.setState({purchaseable: sum > 0});
+    // redux-1 safhasinda alttaki kodu degistirdik
+    // this.setState({purchaseable: sum > 0});
+    return sum > 0;
   }
 
   // bu add ve remove ingredientHandler lari redux-1 safhasinda command yaptik
@@ -152,13 +153,14 @@ class BurgerBuilder extends Component {
     if (this.props.ings) {
       burger = (
         <Aux>
+            {/* redux-1 safhasindan once asagida yazili olarak boyleydi purchaseable={this.state.purchaseable} */}
           <Burger ingredients={this.props.ings} />
           <BuildControls 
             ingredientAdded={this.props.onIngredientAdded}
             ingredientRemoved={this.props.onIngredientRemoved}
             disabled={disabledInfo}
             price={this.props.price}
-            purchaseable={this.state.purchaseable}
+            purchaseable={this.updatePurchaseState(this.props.ings)}
             ordered={this.purchaseHandler}/>
         </Aux>
       );
