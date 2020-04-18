@@ -31,16 +31,17 @@ class BurgerBuilder extends Component {
   componentDidMount() {
     console.log(this.props);
     // this will now send a request to get our ingredients, I'll then add a then block here to handle the response we get back and that response should of course contain our ingredients object.
-    axios
-      .get('https://hamburger-react-maxi.firebaseio.com/ingredients.json')
-      .then(response => {
-        // a data object which actually contains the data we fetched.
-        this.setState({ingredients: response.data});
-      })
-      // If we catch an error there and simply don't do anything with it for example, then we will already not get this anymore because now we're not calling the then block anymore. We can still dismiss the network error and our application is now broken, so we probably would want to handle that specific error case here for this specific page by for example also setting the UI here.
-      .catch(error => {
-        this.setState({error: true})
-      })
+    // asagidaki bolumu redux-1 bolumunde ignore ettik daha async i gormedigimiz icin
+    // axios
+    //   .get('https://hamburger-react-maxi.firebaseio.com/ingredients.json')
+    //   .then(response => {
+    //     // a data object which actually contains the data we fetched.
+    //     this.setState({ingredients: response.data});
+    //   })
+    //   // If we catch an error there and simply don't do anything with it for example, then we will already not get this anymore because now we're not calling the then block anymore. We can still dismiss the network error and our application is now broken, so we probably would want to handle that specific error case here for this specific page by for example also setting the UI here.
+    //   .catch(error => {
+    //     this.setState({error: true})
+    //   });
   }
 
   purchaseHandler = () => {
