@@ -40,7 +40,12 @@ const reducer = (state = initialState, action) => {
         return {
           ...state,
           // I receive these ingredients because in the burger builder action file where we have setIngredients, I do pass this ingredients property.
-          ingredients: action.ingredients,
+          ingredients: {
+            salad: action.ingredients.salad,
+            bacon: action.ingredients.bacon,
+            cheese: action.ingredients.cheese,
+            meat: action.ingredients.meat
+          }
           // I want to set my error to false to reset it in case we had an error earlier
           error: false
         };
