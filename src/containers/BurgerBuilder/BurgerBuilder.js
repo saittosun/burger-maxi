@@ -172,9 +172,9 @@ class BurgerBuilder extends Component {
 // mapStateToProps holds a function which receives the state automatically and which returns a javascript object where we define which property should hold which slice of the state.
 const mapStateToProps = state => {
   return {
-    ings: state.ingredients,
-    price: state.totalPrice,
-    error: state.error
+    ings: state.burgerBuilder.ingredients,
+    price: state.burgerBuilder.totalPrice,
+    error: state.burgerBuilder.error
   }
 }
 
