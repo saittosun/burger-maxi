@@ -1,3 +1,7 @@
 // jshint esversion: 9
 
-export {addIngredient, removeIngredient} from './burgerBuilder';
+export {
+  addIngredient, 
+  removeIngredient,
+  initIngredients
+} from './burgerBuilder';
