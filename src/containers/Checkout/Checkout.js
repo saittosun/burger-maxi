@@ -1,7 +1,7 @@
 // jshint esversion: 6
 // show the burger itself, rebuild the burger in this checkout summary form and then when the user clicks on continue and then want to load the contact form. So that's the goal here
 import React, { Component } from 'react';
-import {Route} from 'react-router-dom';
+import {Route, Redirect} from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import CheckoutSummary from '../../components/Order/CheckoutSummary/CheckoutSummary';
@@ -45,24 +45,23 @@ class Checkout extends Component {
     this.props.history.replace('/checkout/contact-data');
   }
   render() {
-    return (
-      // I want to have a div which wraps my entire page because this will be used as a page with the React router. 
-      <div>
-        <CheckoutSummary 
-          ingredients={this.props.ings}
-          checkoutCancelled={this.checkoutCancelledHandler}
-          checkoutContinued={this.checkoutContinuedHandler}/> 
-        {/* <Route 
-          path={this.props.match.path + '/contact-data'}
-          component={ContactData}/>  */}
-        <Route 
-          path={this.props.match.path + '/contact-data'}
-          //  since I now render it manually here I can pass props to it and here, I'll add my ingredients as a prop and refer to this.state.ingredients.
-          // we only really need price down here where we use our little trick for loading the contact data. Now thanks to our redux store, we no longer need to use the tricks so we don't actually even need the price here because we don't use it anywhere else in this component. So let's get rid of this price prop here in mapStateToProps and let's get rid of the render method
-          component={ContactData}
-              />
-      </div>
-    )
+    let summary = <Redirect to="/"/>
+    if (this.props.ings) {
+      summary = (
+        <div>
+          <CheckoutSummary 
+            ingredients={this.props.ings}
+            checkoutCancelled={this.checkoutCancelledHandler}
+            checkoutContinued={this.checkoutContinuedHandler}/> 
+          <Route 
+            path={this.props.match.path + '/contact-data'}
+            //  since I now render it manually here I can pass props to it and here, I'll add my ingredients as a prop and refer to this.state.ingredients.
+            // we only really need price down here where we use our little trick for loading the contact data. Now thanks to our redux store, we no longer need to use the tricks so we don't actually even need the price here because we don't use it anywhere else in this component. So let's get rid of this price prop here in mapStateToProps and let's get rid of the render method
+            component={ContactData}/>
+        </div>
+      )
+    }
+    return summary
   }
 }
 

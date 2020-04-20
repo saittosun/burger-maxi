@@ -7,6 +7,8 @@ import axios from "../../../../src/axios-orders";
 import Spinner from '../../../components/UI/Spinner/Spinner';
 import Input from '../../../components/UI/Input/Input';
 import { connect } from 'react-redux';
+import withErrorHandler from '../../../hoc/withErrorHandler/withErrorHandler';
+import * as actions from '../../../store/actions/index';
 
 class ContactData extends Component {
   state = {
@@ -99,7 +101,8 @@ class ContactData extends Component {
       }
     },
     formIsValid: false,
-    loading: false
+    // redux-2 bolumunde command oldu
+    // loading: false
   }
 
   orderHandler = (e) => {
@@ -107,7 +110,8 @@ class ContactData extends Component {
     e.preventDefault();
     // we get the ingredients in there with the ingredients being passed, now submitting the request is easy of course. In the burger builder where I have commented out this code for sending a request
     // console.log(this.props.ingredients);
-    this.setState({loading: true})
+    // redux-2 de command yaptik
+    // this.setState({loading: true})
     const formData = {}
     for (let formElementIdentifier in this.state.orderForm) {
       formData[formElementIdentifier] = this.state.orderForm[formElementIdentifier].value
@@ -127,13 +131,16 @@ class ContactData extends Component {
       // },
       // deliveryMethod: 'fastest'
     }
-    axios
-      .post('/orders.json', order)
-      .then(response => {
-        this.setState({loading: false})
-        this.props.history.push('/')
-      })
-      .catch(error => this.setState({loading: false}))
+    // axios
+    //   .post('/orders.json', order)
+    //   .then(response => {
+    //     this.setState({loading: false})
+    //     this.props.history.push('/')
+    //   })
+    //   .catch(error => this.setState({loading: false}))
+
+    // I want to pass my order and this contains the ingredients, the price and here, order data is simply the detailed order data the user entered into the form.
+    this.props.onOrderBurger(order)
   }
 
   // I expect to get an event object as it will automatically be passed to me by react if this method is attached to an event listener which it of course is.
@@ -222,11 +229,13 @@ class ContactData extends Component {
             disabled={!this.state.formIsValid}>ORDER</Button>
       </form>
     );
-    if (this.state.loading) {
+
+    if (this.props.loading) {
       form = (
         <Spinner/>
       )
     }
+    
     return (
       <div className={classes.ContactData}>
         <h4>enter your contact data</h4>
@@ -239,8 +248,16 @@ class ContactData extends Component {
 const mapStateToProps = state => {
   return {
     ings: state.ingredients,
-    price: state.totalPrice
+    price: state.totalPrice,
+    loading: state.loading
   }
 }
 
-export default connect(mapStateToProps) (ContactData);
+const mapDispatchToProps = dispatch => {
+  return {
+    onOrderBurger: (orderData) => dispatch(actions.purchaseBurger(orderData))
+  }
+}
+
+// I don't need to do that it's not related to redux but I want to make sure that I do use it here too just as I use it in the burger builder at the bottom, it's getting wrapped by the connect middleware and I want to have this error dropdown here too.
+export default connect(mapStateToProps, mapDispatchToProps) (withErrorHandler(ContactData, axios));
