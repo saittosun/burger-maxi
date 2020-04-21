@@ -18,6 +18,7 @@ export const removeIngredient = (name) => {
   };
 };
 
+// the setIngredient action is dispatched whenever this page is loaded though, we do it in the burgerbuilder/reducer componentDidMount hook and that is on purpose, I want to load my ingredients and reset them whenever this component gets mounted.
 export const setIngredients = (ingredients) => {
   return {
     type: actionTypes.SET_INGREDIENTS,

@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 
 import CheckoutSummary from '../../components/Order/CheckoutSummary/CheckoutSummary';
 import ContactData from './ContactData/ContactData';
+// import * as actions from '../../store/actions/index';
 
 class Checkout extends Component {
   // state = {
@@ -37,6 +38,11 @@ class Checkout extends Component {
   //   this.setState({ingredients: ingredients, totalPrice: price});
   // }
 
+  // componentWillMount in the checkout container is too late, whilst it does run before render runs, it doesn't prevent the rendering with the old props we received and in the old props, purchased is still true. So we can't dispatch this here in componentWillMount, I'll get rid of mapDispatchToProps here entirely,
+  // componentWillMount() {
+  //   this.props.onInitPurchase()
+  // }
+
   checkoutCancelledHandler = () => {
     this.props.history.goBack();
   }
@@ -47,8 +53,10 @@ class Checkout extends Component {
   render() {
     let summary = <Redirect to="/"/>
     if (this.props.ings) {
+      const purchasedRedirect = this.props.purchased && <Redirect to="/" />
       summary = (
         <div>
+          {purchasedRedirect}
           <CheckoutSummary 
             ingredients={this.props.ings}
             checkoutCancelled={this.checkoutCancelledHandler}
@@ -67,10 +75,18 @@ class Checkout extends Component {
 
 const mapStateToProps = state => {
   return {
-    ings: state.burgerBuilder.ingredients
+    ings: state.burgerBuilder.ingredients,
     // price: state.totalPrice
+    purchased: state.order.purchased
   }
 }
+
+// componentWillMount iptal olunca burasi da command oldu
+// const mapDispatchToProps = dispatch => {
+//   return {
+//     onInitPurchase: () => dispatch(actions.purchaseInit())
+//   }
+// }
 
 // we don't need mapDispatchToProps here because we're not actually dispatching anything in this container, we just navigate a little bit but we don't do this through redux store, we do this through the react router so there is nothing getting dispatched here.
 

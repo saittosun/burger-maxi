@@ -41,3 +41,10 @@ export const purchaseBurger = (orderData) => {
     })
   }
 }
+
+// PURCHASE_INIT will be dispatched whenever we load the checkout page
+export const purchaseInit = () => {
+  return {
+    type: actionTypes.PURCHASE_INIT
+  }
+}

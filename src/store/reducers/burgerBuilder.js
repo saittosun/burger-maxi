@@ -46,6 +46,7 @@ const reducer = (state = initialState, action) => {
             cheese: action.ingredients.cheese,
             meat: action.ingredients.meat
           },
+          totalPrice: 4,
           // I want to set my error to false to reset it in case we had an error earlier
           error: false
         };
