@@ -40,7 +40,8 @@ class Auth extends Component {
         valid: false,
         touched: false
       }
-    }
+    },
+    isSignup: true
   }
 
   checkValidity(value, rules) {
@@ -90,9 +91,16 @@ class Auth extends Component {
     e.preventDefault();
     this.props.onAuth(
       this.state.controls.email.value,
-      this.state.controls.password.value
+      this.state.controls.password.value,
+      this.state.isSignup
     )
   }
+
+  switchAuthModeHandler = () => {
+    this.setState(prevState => {
+      return {isSignup: !prevState.isSignup};
+    });
+  };
 
   render() {
     const formElementsArray = [];
@@ -129,6 +137,11 @@ class Auth extends Component {
             SUBMIT
           </Button>
         </form>
+        <Button 
+          btnType="Danger"
+          clicked={this.switchAuthModeHandler}>
+          SWITCH TO {this.state.isSignup ? 'SIGN IN' : 'SIGN UP'}
+        </Button>
       </div>
     )
   }
@@ -137,7 +150,7 @@ class Auth extends Component {
 const mapDispatchToProps = dispatch => {
   return {
     // With that, we can execute onAuth on our props in this container and I want to do this whenever the form is submitted.
-    onAuth: (email, password) => dispatch(actions.auth(email, password))
+    onAuth: (email, password, isSignup) => dispatch(actions.auth(email, password, isSignup))
   }
 }
 
