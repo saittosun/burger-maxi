@@ -37,6 +37,24 @@ const reducer = (state = initialState, action) => {
         loading: false,
 
       }
+    case actionTypes.FETCH_ORDERS_START:
+      return {
+        ...state,
+        loading: true
+      }
+    case actionTypes.FETCH_ORDERS_SUCCESS:
+      return {
+        ...state,
+        // we can confirm this in our action creator, in the order file, there we dispatched fetchOrderSuccess and in fetchOrdersSuccess, we have our orders property. So this is the orders property we can extract in our reducer therefore, this one and these are the orders already. if you have a look at the transformation function(yine ayni yerde fetchedOrders da) in an array format, so we can store that in our array.
+        orders: action.orders,
+        loading: false
+      }
+    case actionTypes.FETCH_ORDERS_FAIL:
+      return {
+        ...state,
+        //because even though it failed, the loading at least is done.
+        loading: false
+      }
     default:
       return state;
   }

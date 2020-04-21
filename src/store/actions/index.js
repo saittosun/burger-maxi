@@ -1,4 +1,5 @@
 // jshint esversion: 9
+// biz bunlari buraya yaziyoruzki so that we can trigger this from outside.
 
 export {
   addIngredient, 
@@ -8,5 +9,6 @@ export {
 
 export {
   purchaseBurger,
-  purchaseInit
+  purchaseInit,
+  fetchOrders
 } from './order';
