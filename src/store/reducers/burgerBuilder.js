@@ -15,19 +15,31 @@ const INGREDIENT_PRICES = {
   meat: 1.3
 };
 
+const addIngredient = (state, action) => {
+  const updatedIngredient = {
+    [action.ingredientName]: state.ingredients[action.ingredientName] + 1
+  };
+  const updatedIngredients = updateObject(state.ingredients, updatedIngredient);
+  const updatedState = {
+    ingredients: updatedIngredients,
+    totalPrice: state.totalPrice + INGREDIENT_PRICES[action.ingredientName]
+  }
+  return updateObject(state, updatedState);
+}
+
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     // we don't need break statements because we return in each case anyways, so the code execution won't continue in this function.
-    case actionTypes.ADD_INGREDIENT:
-      const updatedIngredient = {
-        [action.ingredientName]: state.ingredients[action.ingredientName] + 1
-      };
-      const updatedIngredients = updateObject(state.ingredients, updatedIngredient);
-      const updatedState = {
-        ingredients: updatedIngredients,
-        totalPrice: state.totalPrice + INGREDIENT_PRICES[action.ingredientName]
-      }
-      return updateObject(state, updatedState);
+    case actionTypes.ADD_INGREDIENT: return addIngredient(state, action)
+      // const updatedIngredient = {
+      //   [action.ingredientName]: state.ingredients[action.ingredientName] + 1
+      // };
+      // const updatedIngredients = updateObject(state.ingredients, updatedIngredient);
+      // const updatedState = {
+      //   ingredients: updatedIngredients,
+      //   totalPrice: state.totalPrice + INGREDIENT_PRICES[action.ingredientName]
+      // }
+      // return updateObject(state, updatedState);
       // return {
       //   ...state,
       //   ingredients: {

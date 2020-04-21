@@ -7,10 +7,14 @@ const initialState = {
   loading: false
 }
 
+const purchaseInit = (state, action) => {
+  return updateObject(state, {purchased: false});
+}
+
 const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case actionTypes.PURCHASE_INIT:
-      return updateObject(state, {purchased: false});
+    case actionTypes.PURCHASE_INIT: return purchaseInit();
+      // return updateObject(state, {purchased: false});
       // return {
       //   ...state,
       //   purchased: false
