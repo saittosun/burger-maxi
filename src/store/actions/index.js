@@ -12,3 +12,8 @@ export {
   purchaseInit,
   fetchOrders
 } from './order';
+
+// I will add my auth action creators to the index.js file where I bundle all my exports from that actions folder.
+export {
+  auth
+} from './auth';

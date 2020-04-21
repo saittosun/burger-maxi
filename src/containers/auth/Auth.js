@@ -4,6 +4,8 @@ import React, { Component } from 'react';
 import Input from '../../components/UI/Input/Input';
 import Button from '../../components/UI/Button/Button';
 import classes from './Auth.css';
+import * as actions from '../../store/actions/index';
+import { connect } from 'react-redux';
 
 class Auth extends Component {
   // I want to use my custom input and button components, just as I use them in the contact data component or container. I'll also manage my form through the state of this auth container, not through redux because I'm only talking about the local state, the values the user entered into their form inputs and so on and it makes more sense to me to use them and to manage them inside the container with react's state property.
@@ -84,6 +86,14 @@ class Auth extends Component {
     this.setState({controls: updatedControls});
   }
 
+  submitHandler = (e) => {
+    e.preventDefault();
+    this.props.onAuth(
+      this.state.controls.email.value,
+      this.state.controls.password.value
+    )
+  }
+
   render() {
     const formElementsArray = [];
     for (let key in this.state.controls) {
@@ -112,11 +122,10 @@ class Auth extends Component {
     return (
         // now we got a form with inputs and a button. To see it, we need to load it via routing, we got the auth container and we set up all our routes in the app.js file.
       <div className={classes.Auth}>
-        <form>
+        <form onSubmit={this.submitHandler}>
           {form}
           <Button 
-            btnType="Success"
-            disabled={!this.state.formIsValid}>
+            btnType="Success">
             SUBMIT
           </Button>
         </form>
@@ -125,4 +134,11 @@ class Auth extends Component {
   }
 }
 
-export default Auth;
+const mapDispatchToProps = dispatch => {
+  return {
+    // With that, we can execute onAuth on our props in this container and I want to do this whenever the form is submitted.
+    onAuth: (email, password) => dispatch(actions.auth(email, password))
+  }
+}
+
+export default connect(null, mapDispatchToProps) (Auth);
