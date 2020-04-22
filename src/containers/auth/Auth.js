@@ -6,6 +6,7 @@ import Button from '../../components/UI/Button/Button';
 import classes from './Auth.css';
 import * as actions from '../../store/actions/index';
 import { connect } from 'react-redux';
+import Spinner from '../../components/UI/Spinner/Spinner';
 
 class Auth extends Component {
   // I want to use my custom input and button components, just as I use them in the contact data component or container. I'll also manage my form through the state of this auth container, not through redux because I'm only talking about the local state, the values the user entered into their form inputs and so on and it makes more sense to me to use them and to manage them inside the container with react's state property.
@@ -111,7 +112,7 @@ class Auth extends Component {
       })
     }
 
-    const form = (
+    let form = (
       formElementsArray.map(formElement => {
         return (
           <Input
@@ -127,9 +128,24 @@ class Auth extends Component {
         )
       })
     )
+
+    if (this.props.loading) {
+      form = <Spinner/>
+    }
+
+    let errorMessage = null;
+    if (this.props.error) {
+      // this message property is only available because I'm using the error as it comes back from firebase and that happens to be a javascript object which has a message property, this might not be the case for your own backend of course, adjust this to your needs.
+      errorMessage = (
+        <p>{this.props.error.message}</p>
+      )
+    }
+
     return (
         // now we got a form with inputs and a button. To see it, we need to load it via routing, we got the auth container and we set up all our routes in the app.js file.
       <div className={classes.Auth}>
+        {/* we have to ensure that we really store that error, so I have to go to my auth file in the actions folder and we can access the error message, the error object (dispatch(authFail(err.response.data.error))) we get back from firebase on this error object here by accessing the original response and that is due to axios, we're using axios here and it simply wraps the response in this error object */}
+        {errorMessage}
         <form onSubmit={this.submitHandler}>
           {form}
           <Button 
@@ -147,6 +163,15 @@ class Auth extends Component {
   }
 }
 
+const mapStateToProps = state => {
+  return {
+    // on state, we have to access auth since this is what leads to the auth reducer in the end due to combined reducers(src/index.js den gosterdi)
+    // the loading property we set up in our auth reducers state,(buradaki initialState deki property ile ayni)
+    loading: state.auth.loading,
+    error: state.auth.error
+  }
+}
+
 const mapDispatchToProps = dispatch => {
   return {
     // With that, we can execute onAuth on our props in this container and I want to do this whenever the form is submitted.
@@ -154,4 +179,4 @@ const mapDispatchToProps = dispatch => {
   }
 }
 
-export default connect(null, mapDispatchToProps) (Auth);
+export default connect(mapStateToProps, mapDispatchToProps) (Auth);
